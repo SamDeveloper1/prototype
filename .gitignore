@@ -54,12 +54,13 @@ venv.bak/
 ehthumbs.db
 Thumbs.db
 
-# Large Model Weights (if exceeding GitHub's 100MB file limit)
-# Note: Use Git LFS for weights if tracking in repo
+# Large Model Weights & Archives
 *.pt
 *.bin
 *.safetensors
 *.onnx
+*.zip
+
 
 # Local runtime logs
 *.log
