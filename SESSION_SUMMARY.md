@@ -142,13 +142,28 @@ agy -c
 
 ---
 
+## 7. Deep Learning Transformer Pipeline for RTX 3050 (4GB VRAM) (Completed)
+
+* **Guide**: [`sec_prototype/DL_COLLABORATION_GUIDE.md`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/DL_COLLABORATION_GUIDE.md)
+* **Training Script**: [`sec_prototype/src/train_dl_models.py`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/src/train_dl_models.py)
+* **Jupyter Notebook**: [`sec_prototype/notebooks/train_deep_learning_gpu.ipynb`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/notebooks/train_deep_learning_gpu.ipynb)
+* **GPU Requirements**: [`sec_prototype/requirements-gpu.txt`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/requirements-gpu.txt)
+* **Optimized Settings for 4GB VRAM**:
+  * FP16 Mixed Precision (`fp16=True`)
+  * Batch Size = 8, Gradient Accumulation = 2 (effective batch size 16)
+  * Max Sequence Length = 256 tokens (prevents OOM)
+  * Evaluation on unseen test split with confusion matrix plot and JSON metrics export.
+
+---
+
 ## 🎯 Immediate Next Steps When You Resume
 
-1. **Support Teammate on Step 13 (Next.js Frontend)**:
+1. **Push to Remote Git**:
+   - Run `git push origin main` in terminal so teammate can clone from `https://github.com/SamDeveloper1/prototype.git`.
+2. **Support Teammate on Step 13 (Next.js Frontend)**:
    - Provide exact request/response schemas for `/predict_fakenews`, `/predict_hatespeech`, and `/predict_hatespeech_media`.
-2. **Deep Learning Colab Notebook (`notebooks/train_deep_learning.ipynb`)**:
-   - Create push-button training notebook for Google Colab GPU (DeBERTa-v3 / IndicBERT) on `data/splits/`.
 3. **Step 16 — Automated Test Suite (`tests/test_api.py`)**:
    - Add unit tests with pytest & FastAPI TestClient.
+
 
 
