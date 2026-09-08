@@ -107,11 +107,33 @@ agy -c
 
 ---
 
+---
+
+## 5. FastAPI Backend & Modular Controllers (Completed)
+
+* **Entry Point**: [`sec_prototype/main.py`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/main.py)
+* **Controllers Directory**: [`sec_prototype/controllers/`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/controllers/)
+  * `fake_news_controller.py`: Input validation (text vs URL), web scraping, TF-IDF inference, returns verdict + confidence.
+  * `hate_speech_controller.py`: Input validation, text sanitization, inference, returns verdict + confidence.
+  * `scraper_utils.py`: URL parsing, OpenGraph title extraction, DOM paragraph parsing.
+* **Routes Implemented**:
+  * `POST /predict_fakenews`
+  * `POST /predict_hatespeech`
+  * `GET /health` & `GET /docs` (Interactive Swagger documentation)
+* **Test Verification**:
+  * Fake News Claim: 98.5% confidence (`Fake News`)
+  * Real News Sample: 81.0% confidence (`Real News`)
+  * Hostile Text: 74.8% confidence (`Hate Speech / Hostile`)
+  * Safe Text: 55.6% confidence (`Safe / Non-Hate`)
+  * Empty payload validation: Returns clean `422 Unprocessable Entity`
+
+---
+
 ## 🎯 Immediate Next Steps When You Resume
 
-1. **Deep Learning Model Training**:
-   - Transformer fine-tuning (DeBERTa-v3 for Fake News, IndicBERT / BiLSTM for Hate Speech).
-   - Show how Deep Learning elevates Hate Speech accuracy from ~72% (n-grams) to 90%+ (contextual attention).
-2. **Step 4: Push to Team GitHub**:
-   - Push all commits to your team's remote GitHub repository.
+1. **Step 13 — Build Next.js Application (`web/`)**:
+   - Create the frontend interface with text area, "Paste a URL instead" toggle, loading spinner, and the two result cards.
+   - Connect Next.js fetch requests to `http://localhost:8000/predict_fakenews` and `/predict_hatespeech`.
+2. **Deep Learning Colab Notebook**:
+   - Send `train_deep_learning.ipynb` to your friend for BERT fine-tuning.
 
