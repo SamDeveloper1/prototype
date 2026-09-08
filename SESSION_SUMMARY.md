@@ -79,12 +79,39 @@ agy -c
 
 ---
 
+---
+
+## 4. Machine Learning Models Trained & Benchmarked (Completed)
+
+* **Script**: [`sec_prototype/src/train_ml_models.py`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/src/train_ml_models.py)
+* **Jupyter Notebook**: [`sec_prototype/notebooks/train_ml_models.ipynb`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/notebooks/train_ml_models.ipynb)
+* **Models Trained**: Naive Bayes, Logistic Regression, Linear SVM (Calibrated), Random Forest.
+* **Feature Extraction**: N-Gram TF-IDF Vectorizer (Unigrams + Bigrams, 10,000 features).
+* **Saved Weights**: Saved to [`sec_prototype/models/`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/models/) (13 files including `.joblib` and `ml_benchmark_results.json`).
+
+### Task 1: Fake News Detection Benchmark (1,000 Test Samples)
+| Model | Accuracy | Precision | Recall | F1-Score | Status |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Linear SVM** | **92.90%** | **91.65%** | **94.40%** | **93.00%** | ⭐ **Best Model (Saved as default)** |
+| Logistic Regression | 92.60% | 90.04% | 95.80% | 92.83% | Production Ready |
+| Random Forest | 92.50% | 90.94% | 94.40% | 92.64% | Robust Ensemble |
+| Multinomial Naive Bayes | 88.80% | 86.88% | 91.40% | 89.08% | Fast Baseline |
+
+### Task 2: Hate Speech Detection Benchmark (1,000 Test Samples)
+| Model | Accuracy | Precision | Recall | F1-Score | Status |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Naive Bayes** | **70.40%** | **67.59%** | **78.40%** | **72.59%** | ⭐ **Best ML Baseline** |
+| Linear SVM | 72.00% | 71.40% | 73.40% | 72.39% | Solid Linear Boundary |
+| Logistic Regression | 71.60% | 71.77% | 71.20% | 71.49% | Calibrated Probabilities |
+| Random Forest | 73.70% | 79.26% | 64.20% | 70.94% | High Precision |
+
+---
+
 ## 🎯 Immediate Next Steps When You Resume
 
-1. **Run 10k Dataset Pipeline (`scale_fake_news_10k.py`)**:
-   - Collect and merge the confirmed sources into the 10,000-row `indian_fake_news_corpus.csv` file.
-   - Generate stratified splits (Train: 8k, Val: 1k, Test: 1k).
-2. **Model Training (Notebook / Colab)**:
-   - Train 3–4 classical ML baselines (TF-IDF + Logistic Regression, SVM, Naive Bayes, Random Forest).
-   - Fine-tune 2 Deep Learning Transformer models (DeBERTa-v3 for Fake News, IndicBERT / RoBERTa for Hate Speech).
+1. **Deep Learning Model Training**:
+   - Transformer fine-tuning (DeBERTa-v3 for Fake News, IndicBERT / BiLSTM for Hate Speech).
+   - Show how Deep Learning elevates Hate Speech accuracy from ~72% (n-grams) to 90%+ (contextual attention).
+2. **Step 4: Push to Team GitHub**:
+   - Push all commits to your team's remote GitHub repository.
 
