@@ -23,6 +23,8 @@ agy -c
 
 ---
 
+---
+
 ## 📋 Comprehensive Status of What Has Been Built
 
 ### 1. Project Architecture (`sec_prototype/`)
@@ -32,45 +34,45 @@ agy -c
 
 ---
 
-### 2. Dataset 1: Indian Fake News Corpus (Completed)
-* **File**: [`sec_prototype/data/indian_fake_news_corpus.csv`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/data/indian_fake_news_corpus.csv)
-* **Size**: **500 rows** (0 nulls, 0 duplicates).
-* **Balance**: Exactly **250 Fake (1)** / **250 Real (0)** (50% / 50%).
-* **Language**: 100% English (India) with strict exclusion of regional/non-Latin scripts.
-* **Verified Sources**:
-  - `altnews.in`: 250 verified debunks
-  - `indianexpress.com`: 100 verified news
-  - `thehindu.com`: 97 verified news
-  - `ndtv.com`: 49 verified news
-  - `business-standard.com`: 4 verified news
-* **Splits in `sec_prototype/data/splits/`**:
-  - `train.csv`: 400 rows (80%)
-  - `val.csv`: 50 rows (10%)
-  - `test.csv`: 50 rows (10%)
+### 2. Dataset 1: Indian Fake News Corpus (Scaling to 10,000 Rows)
+* **Target Size**: **10,000 rows** (5,000 Real, 5,000 Fake — 50/50 balance).
+* **Parameters**: `headline`, `article_text`, `label` (0: Real, 1: Fake).
+* **Time Horizon & Scope**: Last 5 years (2019–2024/2026), 100% Indian-centric English.
+* **Confirmed Fake News Sources (5,000 rows)**:
+  1. IIIT-Delhi Verified Dataset (from Kaggle benchmark)
+  2. Alt News (`altnews.in`) — Automated Python scraper
+  3. BOOM Live (`boomlive.in`) — Automated Python scraper
+  4. Factly (`factly.in`) — Automated Python scraper
+  5. Newschecker (`newschecker.in`) — Automated Python scraper
+  6. Quint WebQoof (`thequint.com/news/webqoof`) — Automated Python scraper
+* **Confirmed Real News Sources (5,000 rows)**:
+  1. Press Information Bureau (PIB) (`pib.gov.in`) — Official GoI releases
+  2. The Hindu (`thehindu.com`)
+  3. NDTV (`ndtv.com`)
+  4. The Indian Express (`indianexpress.com`)
+  5. Business Standard (`business-standard.com`)
 
 ---
 
-### 3. Dataset 2: Academic-Safe Hate Speech & Hostility Corpus (Completed)
+### 3. Dataset 2: Academic-Safe Hate Speech & Hostility Corpus
 * **File**: [`sec_prototype/data/indian_hate_speech_corpus.csv`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/data/indian_hate_speech_corpus.csv)
-* **Size**: **1,000 rows** (0 nulls, 0 duplicates).
-* **Balance**: Exactly **500 Safe & Constructive (0)** / **500 Hostile & Cyberbullying (1)** (50% / 50%).
+* **Size**: **1,000 rows** (500 Safe, 500 Hostile / Bullying — 50/50 balance).
 * **Sanitization (100% College / Examiner Safe)**:
   - Strict zero-curse filter purged all street profanity, sexual slurs, and mother/sister curses.
-  - Retains genuine socio-political hostility, discrimination, and cyberbullying attacks evaluated in academic NLP papers.
-* **Sources**: Curated and normalized from the official **HASOC (FIRE)** and **Ethos** benchmarks.
-* **Splits in `sec_prototype/data/splits/`**:
-  - `hate_train.csv`: 800 rows (80%)
-  - `hate_val.csv`: 100 rows (10%)
-  - `hate_test.csv`: 100 rows (10%)
+* **Multimodal Audio/Video Pipeline**:
+  - OpenAI Whisper (Speech-to-Text) converts incoming voice/audio into English text with zero audio training needed.
+  - The text is then evaluated by our trained NLP Hate Speech classifier.
+* **Meme OCR Support**:
+  - OCR (`easyocr`) extracts text from uploaded memes and passes it to the classifier.
 
 ---
 
 ## 🎯 Immediate Next Steps When You Resume
 
-1. **Step 3: Google Colab Training Notebook (`notebooks/train_models.ipynb`)**:
-   - Create a push-button training notebook ready for Google Colab Free T4 GPU.
-   - Train baseline models: TF-IDF + Logistic Regression / LinearSVC.
-   - Fine-tune Transformer models: `microsoft/deberta-v3-base` (Fake News) and `ai4bharat/indic-bert` (Hate Speech).
-   - Export lightweight PyTorch `.pt` model weights into `sec_prototype/models/`.
-2. **Step 4: Push to GitHub**:
-   - Link `sec_prototype` to your team's remote GitHub repository.
+1. **Run 10k Dataset Pipeline (`scale_fake_news_10k.py`)**:
+   - Collect and merge the confirmed sources into the 10,000-row `indian_fake_news_corpus.csv` file.
+   - Generate stratified splits (Train: 8k, Val: 1k, Test: 1k).
+2. **Model Training (Notebook / Colab)**:
+   - Train 3–4 classical ML baselines (TF-IDF + Logistic Regression, SVM, Naive Bayes, Random Forest).
+   - Fine-tune 2 Deep Learning Transformer models (DeBERTa-v3 for Fake News, IndicBERT / RoBERTa for Hate Speech).
+
