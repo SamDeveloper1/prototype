@@ -18,6 +18,8 @@ accelerate>=0.25.0
 evaluate>=0.4.0
 
 # API & Serving
+fastapi>=0.110.0
+uvicorn>=0.28.0
 flask>=3.0.0
 flask-cors>=4.0.0
 python-dotenv>=1.0.0
