@@ -54,16 +54,28 @@ agy -c
 
 ---
 
-### 3. Dataset 2: Academic-Safe Hate Speech & Hostility Corpus
+### 3. Dataset 2: Academic-Safe Hate Speech & Hostility Corpus (10,000 Rows Completed)
 * **File**: [`sec_prototype/data/indian_hate_speech_corpus.csv`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/data/indian_hate_speech_corpus.csv)
-* **Size**: **1,000 rows** (500 Safe, 500 Hostile / Bullying — 50/50 balance).
+* **Total Records**: **Exactly 10,000 Rows**
+* **Class Balance**: **5,000 Safe (`0`)** & **5,000 Hostile / Targeted Hate (`1`)** (50% / 50%).
+* **Multi-Source Balanced Distribution**:
+  - `iit_kgp_hatexplain`: 4,446 rows (IIT Kharagpur AAAI-2021 multi-annotator benchmark)
+  - `cyberbullying_tweets`: 3,900 rows (Targeted hostility benchmark)
+  - `curated_academic`: 999 rows (Sanitized baseline)
+  - `ethos_benchmark`: 655 rows (Ethos academic benchmark)
+* **Target Community Annotations**:
+  - `religion`: 1,546 rows
+  - `gender`: 1,130 rows
+  - `ethnicity`: 899 rows
+  - `age`: 496 rows
+  - `general` / `Hostile`: 1,610 rows
+  - `none` (Safe comments): 4,319 rows
 * **Sanitization (100% College / Examiner Safe)**:
-  - Strict zero-curse filter purged all street profanity, sexual slurs, and mother/sister curses.
-* **Multimodal Audio/Video Pipeline**:
-  - OpenAI Whisper (Speech-to-Text) converts incoming voice/audio into English text with zero audio training needed.
-  - The text is then evaluated by our trained NLP Hate Speech classifier.
-* **Meme OCR Support**:
-  - OCR (`easyocr`) extracts text from uploaded memes and passes it to the classifier.
+  - Strict zero-curse filter purged all crude street vulgarity, sexual slurs, and abusive profanity.
+* **Stratified Splits in `sec_prototype/data/splits/`**:
+  - `hate_train.csv`: 8,000 rows (80%)
+  - `hate_val.csv`: 1,000 rows (10%)
+  - `hate_test.csv`: 1,000 rows (10%)
 
 ---
 
