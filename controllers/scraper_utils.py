@@ -10,6 +10,7 @@ from fastapi import HTTPException
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept-Encoding': 'gzip, deflate',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'Accept-Language': 'en-US,en;q=0.9',
 }
@@ -37,23 +38,35 @@ def scrape_url_content(url: str) -> tuple[str, str]:
             detail=f"Invalid URL format: '{clean_url}'. Must start with http:// or https://"
         )
 
+    resp = None
     try:
-        resp = requests.get(clean_url, headers=HEADERS, timeout=10)
+        # Primary request with standard gzip/deflate encoding
+        resp = requests.get(clean_url, headers=HEADERS, timeout=12)
         if resp.status_code >= 400:
             raise HTTPException(
                 status_code=400,
                 detail=f"Failed to access URL. Server responded with HTTP status {resp.status_code}."
             )
-    except requests.exceptions.Timeout:
-        raise HTTPException(
-            status_code=408,
-            detail="Request timed out while trying to reach the provided URL."
-        )
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Network error while fetching URL: {str(e)}"
-        )
+    except (requests.exceptions.ContentDecodingError, Exception) as e:
+        # Fallback: Retry with uncompressed plain text encoding if CDN compression fails
+        try:
+            fallback_headers = {**HEADERS, 'Accept-Encoding': 'identity'}
+            resp = requests.get(clean_url, headers=fallback_headers, timeout=12)
+            if resp.status_code >= 400:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Failed to access URL. Server responded with HTTP status {resp.status_code}."
+                )
+        except requests.exceptions.Timeout:
+            raise HTTPException(
+                status_code=408,
+                detail="Request timed out while trying to reach the provided URL."
+            )
+        except Exception as retry_err:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Network error while fetching URL: {str(retry_err)}"
+            )
 
     soup = BeautifulSoup(resp.text, 'html.parser')
 
