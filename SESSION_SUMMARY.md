@@ -117,8 +117,9 @@ agy -c
   * `hate_speech_controller.py`: Input validation, text sanitization, inference, returns verdict + confidence.
   * `scraper_utils.py`: URL parsing, OpenGraph title extraction, DOM paragraph parsing.
 * **Routes Implemented**:
-  * `POST /predict_fakenews`
-  * `POST /predict_hatespeech`
+  * `POST /predict_fakenews`: Handles text and article URLs.
+  * `POST /predict_hatespeech`: Handles text input for hate speech.
+  * `POST /predict_hatespeech_media`: Handles audio (`.mp3`, `.wav`, etc.) and video (`.mp4`, `.mov`, etc.) via Whisper `base` + `ffmpeg`.
   * `GET /health` & `GET /docs` (Interactive Swagger documentation)
 * **Test Verification**:
   * Fake News Claim: 98.5% confidence (`Fake News`)
@@ -126,14 +127,28 @@ agy -c
   * Hostile Text: 74.8% confidence (`Hate Speech / Hostile`)
   * Safe Text: 55.6% confidence (`Safe / Non-Hate`)
   * Empty payload validation: Returns clean `422 Unprocessable Entity`
+  * Media Endpoint: Successfully tested with audio and video inputs.
+
+---
+
+## 6. Multimodal Audio & Video Transcription (Completed)
+
+* **Module**: [`sec_prototype/controllers/media_utils.py`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/controllers/media_utils.py)
+* **Features**:
+  * OpenAI Whisper (`base` model, ~74M parameters) cached in memory on startup.
+  * Native `ffmpeg` integration for audio extraction (converts video tracks to 16kHz mono audio).
+  * Supports Audio (`.mp3`, `.wav`, `.m4a`, `.ogg`, `.flac`) and Video (`.mp4`, `.mov`, `.mkv`, `.webm`).
+  * Automatic temporary file cleanup after transcription and inference.
 
 ---
 
 ## 🎯 Immediate Next Steps When You Resume
 
-1. **Step 13 — Build Next.js Application (`web/`)**:
-   - Create the frontend interface with text area, "Paste a URL instead" toggle, loading spinner, and the two result cards.
-   - Connect Next.js fetch requests to `http://localhost:8000/predict_fakenews` and `/predict_hatespeech`.
-2. **Deep Learning Colab Notebook**:
-   - Send `train_deep_learning.ipynb` to your friend for BERT fine-tuning.
+1. **Support Teammate on Step 13 (Next.js Frontend)**:
+   - Provide exact request/response schemas for `/predict_fakenews`, `/predict_hatespeech`, and `/predict_hatespeech_media`.
+2. **Deep Learning Colab Notebook (`notebooks/train_deep_learning.ipynb`)**:
+   - Create push-button training notebook for Google Colab GPU (DeBERTa-v3 / IndicBERT) on `data/splits/`.
+3. **Step 16 — Automated Test Suite (`tests/test_api.py`)**:
+   - Add unit tests with pytest & FastAPI TestClient.
+
 
