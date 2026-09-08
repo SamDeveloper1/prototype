@@ -11,11 +11,13 @@ Handles:
 
 import os
 import time
+import tempfile
 import joblib
 from typing import Optional, Dict, Any
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
 from pydantic import BaseModel, Field
 from controllers.scraper_utils import is_valid_url, scrape_url_content
+from controllers.media_utils import get_media_type, transcribe_media_file
 
 # Model Paths
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -109,3 +111,79 @@ def handle_hate_speech_prediction(payload: HateSpeechInput) -> Dict[str, Any]:
         "preview_text": text_to_analyze[:300] + ("..." if len(text_to_analyze) > 300 else ""),
         "inference_time_ms": inference_time
     }
+
+async def handle_hate_speech_media(file: UploadFile) -> Dict[str, Any]:
+    """
+    Handles uploaded audio or video files:
+      1. Validates media format (.mp3, .wav, .mp4, .mov, etc.)
+      2. Extracts audio from video if needed using ffmpeg
+      3. Transcribes speech using OpenAI Whisper
+      4. Executes Hate Speech model inference on transcribed text
+      5. Returns verdict + confidence score + transcript
+    """
+    t_start = time.time()
+    filename = file.filename or ""
+    media_type = get_media_type(filename)
+
+    if not media_type:
+        ext = os.path.splitext(filename.lower())[1]
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unsupported file format '{ext}'. Allowed audio: mp3, wav, m4a, ogg, flac; video: mp4, mov, mkv, webm."
+        )
+
+    # Save uploaded file to temp path
+    ext = os.path.splitext(filename.lower())[1]
+    temp_file = None
+
+    try:
+        temp_fd, temp_file = tempfile.mkstemp(suffix=ext)
+        with os.fdopen(temp_fd, 'wb') as f:
+            while chunk := await file.read(1024 * 1024):  # 1MB chunks
+                f.write(chunk)
+
+        # Transcribe speech using Whisper
+        is_video = (media_type == 'video')
+        transcribed_text = transcribe_media_file(temp_file, is_video=is_video)
+
+        if not transcribed_text or len(transcribed_text.strip()) < 3:
+            raise HTTPException(
+                status_code=422,
+                detail="No recognizable speech was detected in the uploaded audio/video file."
+            )
+
+        # Run Model Inference on the transcribed text
+        vectorizer, model = get_hate_speech_model()
+        vec = vectorizer.transform([transcribed_text])
+
+        probabilities = model.predict_proba(vec)[0]
+        prob_safe = float(probabilities[0])
+        prob_hostile = float(probabilities[1])
+
+        if prob_hostile >= 0.5:
+            verdict = "Hate Speech / Hostile"
+            confidence_score = round(prob_hostile * 100, 2)
+        else:
+            verdict = "Safe / Non-Hate"
+            confidence_score = round(prob_safe * 100, 2)
+
+        inference_time = round((time.time() - t_start) * 1000, 2)
+
+        return {
+            "status": "success",
+            "verdict": verdict,
+            "confidence_score": confidence_score,
+            "input_type": media_type,
+            "transcribed_text": transcribed_text,
+            "preview_text": transcribed_text[:300] + ("..." if len(transcribed_text) > 300 else ""),
+            "inference_time_ms": inference_time
+        }
+
+    finally:
+        # Clean up temporary uploaded file
+        if temp_file and os.path.exists(temp_file):
+            try:
+                os.remove(temp_file)
+            except Exception:
+                pass
+

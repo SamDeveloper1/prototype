@@ -10,7 +10,7 @@ Routes:
 
 import uvicorn
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from controllers.fake_news_controller import (
     FakeNewsInput,
@@ -20,19 +20,23 @@ from controllers.fake_news_controller import (
 from controllers.hate_speech_controller import (
     HateSpeechInput,
     handle_hate_speech_prediction,
+    handle_hate_speech_media,
     get_hate_speech_model
 )
+from controllers.media_utils import get_whisper_model
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Preloads ML models and vectorizers into memory at startup."""
+    """Preloads ML models and Whisper into memory at startup."""
     print("\n[Startup] Pre-loading ML models into memory...")
     try:
         get_fake_news_model()
         print("  ✓ Fake News Model & Vectorizer cached.")
         get_hate_speech_model()
         print("  ✓ Hate Speech Model & Vectorizer cached.")
-        print("[Startup] All models ready for sub-millisecond inference!\n")
+        get_whisper_model()
+        print("  ✓ OpenAI Whisper Base Model cached.")
+        print("[Startup] All models ready for sub-second multimodal inference!\n")
     except Exception as e:
         print(f"  ✗ Warning during model pre-loading: {e}")
     yield
@@ -62,7 +66,8 @@ def root():
         "docs_url": "/docs",
         "endpoints": {
             "fake_news": "/predict_fakenews (POST)",
-            "hate_speech": "/predict_hatespeech (POST)",
+            "hate_speech_text": "/predict_hatespeech (POST)",
+            "hate_speech_media": "/predict_hatespeech_media (POST multipart/form-data)",
             "health": "/health (GET)"
         }
     }
@@ -73,7 +78,8 @@ def health_check():
         "status": "healthy",
         "models": {
             "fake_news": "Linear SVM (93.00% F1)",
-            "hate_speech": "Multinomial Naive Bayes (72.59% F1)"
+            "hate_speech": "Linear SVM / Naive Bayes (72.59% F1)",
+            "audio_transcription": "OpenAI Whisper Base"
         }
     }
 
@@ -93,6 +99,17 @@ def predict_hatespeech(payload: HateSpeechInput):
     - Returns verdict ('Safe / Non-Hate' or 'Hate Speech / Hostile') along with the confidence score.
     """
     return handle_hate_speech_prediction(payload)
+
+@app.post("/predict_hatespeech_media", summary="Detect Hate Speech from Uploaded Audio or Video File")
+async def predict_hatespeech_media(
+    file: UploadFile = File(..., description="Audio (.mp3, .wav, .m4a, .ogg) or Video (.mp4, .mov, .mkv, .webm) file")
+):
+    """
+    Transcribes spoken speech from an uploaded Audio or Video file using OpenAI Whisper (base model),
+    extracts audio from video via ffmpeg, and evaluates whether the speech contains Hate Speech / Hostility.
+    - Returns verdict ('Safe / Non-Hate' or 'Hate Speech / Hostile'), confidence score, and speech transcript.
+    """
+    return await handle_hate_speech_media(file)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
