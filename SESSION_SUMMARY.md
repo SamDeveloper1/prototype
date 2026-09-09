@@ -156,14 +156,29 @@ agy -c
 
 ---
 
+## 8. Deep Learning Model Integration & Apple Silicon (MPS) Optimization (Completed)
+
+* **Models Loaded**:
+  * Fake News BERT (`bert-base-uncased` fine-tuned): **97.02% F1-Score**
+  * Hate Speech BERT (`bert-base-uncased` fine-tuned): **78.08% F1-Score**
+  * OpenAI Whisper `base` (~74M parameters)
+* **Optimization for macOS Apple Silicon (M1)**:
+  * Resolved macOS TensorFlow/PyTorch `libomp` collision by enforcing `USE_TF=0`.
+  * Enabled Apple Silicon Metal GPU (`mps` device) for sub-second inference.
+  * Verified server startup across all 3 models in ~7 seconds total.
+  * Graceful fallback to Linear SVM if PyTorch / GPU is unavailable.
+
+---
+
 ## 🎯 Immediate Next Steps When You Resume
 
-1. **Push to Remote Git**:
-   - Run `git push origin main` in terminal so teammate can clone from `https://github.com/SamDeveloper1/prototype.git`.
-2. **Support Teammate on Step 13 (Next.js Frontend)**:
-   - Provide exact request/response schemas for `/predict_fakenews`, `/predict_hatespeech`, and `/predict_hatespeech_media`.
-3. **Step 16 — Automated Test Suite (`tests/test_api.py`)**:
-   - Add unit tests with pytest & FastAPI TestClient.
+1. **Step 13 — Support Teammate on Next.js Frontend (`localhost:3000`)**:
+   - Provide exact API schema for `/predict_fakenews`, `/predict_hatespeech`, and `/predict_hatespeech_media`.
+2. **Step 16 — Automated Unit Test Suite (`tests/test_api.py`)**:
+   - Add automated pytest cases for API regression prevention.
+3. **Thesis Benchmark Synthesis**:
+   - Prepare final comparison table: Classical ML vs BiLSTM vs BERT.
+
 
 
 
