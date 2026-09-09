@@ -10,6 +10,11 @@ Handles:
 """
 
 import os
+# Prevent TensorFlow/PyTorch conflict and enable clean PyTorch execution
+os.environ["USE_TF"] = "0"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import time
 import joblib
 from typing import Optional, Dict, Any
@@ -36,7 +41,12 @@ def get_fake_news_bert():
     if _bert_model is None:
         import torch
         from transformers import AutoTokenizer, AutoModelForSequenceClassification
-        _bert_device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        if torch.cuda.is_available():
+            _bert_device = torch.device('cuda')
+        elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+            _bert_device = torch.device('mps')
+        else:
+            _bert_device = torch.device('cpu')
         bert_path = os.path.join(MODELS_DIR, 'deep_learning', 'fakenews', 'bert-base-uncased', 'best_model')
         if not os.path.exists(bert_path):
             raise FileNotFoundError(f"BERT model path not found at: {bert_path}")

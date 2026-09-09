@@ -8,6 +8,12 @@ Routes:
   - GET  /                   -> Welcome & API Documentation link
 """
 
+import os
+# Prevent TensorFlow/PyTorch C-runtime collision (SIGSEGV 139) on macOS and enable clean PyTorch execution
+os.environ["USE_TF"] = "0"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import uvicorn
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, UploadFile, File
