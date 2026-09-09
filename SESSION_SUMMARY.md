@@ -170,14 +170,30 @@ agy -c
 
 ---
 
+## 9. Next.js 14 "Modern Broadsheet" Frontend (`sec_prototype/web/`) (Completed)
+
+* **Architecture**: Next.js 14 App Router, TypeScript, Tailwind CSS, Framer Motion.
+* **Aesthetic**: Option A (Light Parchment Broadsheet Newspaper).
+  * Authentic masthead: `THE VERITAS CHRONICLE` with live `/health` telemetry pill.
+  * Broadsheet fonts (`Newsreader`, `Inter`, `JetBrains Mono`).
+  * Double-border newsprint divider styling.
+* **Key Components**:
+  * [`web/src/components/RubberStamp.tsx`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/web/src/components/RubberStamp.tsx): Physics-based animated rubber stamp (slam, recoil, ink bleed).
+  * [`web/src/components/FakeNewsDesk.tsx`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/web/src/components/FakeNewsDesk.tsx): Text and live URL verification with circular radial confidence dial and expandable `Inspect Raw API JSON` drawer.
+  * [`web/src/components/HateSpeechDesk.tsx`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/web/src/components/HateSpeechDesk.tsx): Multimodal text, audio, and video toxicity analysis with OpenAI Whisper speech-to-text transcript card.
+  * [`web/src/components/ModelObservatory.tsx`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/web/src/components/ModelObservatory.tsx): Interactive thesis benchmark comparisons across Classical ML (Linear SVM), Deep Learning (BiLSTM), and Transformers (BERT).
+* **Launcher**:
+  * [`sec_prototype/run_app.sh`](file:///Users/samarth/Desktop/Final%20Year%20stuff/Final_year_project/sec_prototype/run_app.sh): Unified single-command launcher running FastAPI on `:8000` and Next.js on `:3000`.
+
+---
+
 ## 🎯 Immediate Next Steps When You Resume
 
-1. **Step 13 — Support Teammate on Next.js Frontend (`localhost:3000`)**:
-   - Provide exact API schema for `/predict_fakenews`, `/predict_hatespeech`, and `/predict_hatespeech_media`.
-2. **Step 16 — Automated Unit Test Suite (`tests/test_api.py`)**:
+1. **Step 16 — Automated Unit Test Suite (`tests/test_api.py`)**:
    - Add automated pytest cases for API regression prevention.
-3. **Thesis Benchmark Synthesis**:
-   - Prepare final comparison table: Classical ML vs BiLSTM vs BERT.
+2. **Project Report & Defense Presentation**:
+   - Finalize thesis figures and slides using the Model Observatory benchmarks.
+
 
 
 
