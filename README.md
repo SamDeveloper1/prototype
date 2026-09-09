@@ -1,74 +1,164 @@
-# Indian Fake News & Hate Speech Detection System (Phase 2 Prototype)
+# 📰 The Veritas Chronicle: Indian Fake News & Hate Speech Detection System
 
-A production-ready NLP system engineered for detecting contextual misinformation, disinformation, and hate speech across the Indian media and social landscape.
-
----
-
-## 🏗️ System Architecture
-
-```
-sec_prototype/
-├── data/                       # Curated datasets and train/val/test splits
-│   ├── indian_fake_news_corpus.csv
-│   └── splits/
-├── models/                     # Trained model weights (.pt, .pkl)
-├── notebooks/                  # Jupyter & Google Colab training workflows
-├── src/                        # Production Python modules & ETL pipelines
-│   ├── fetch_fake_news.py      # Automated scraper for AltNews & Factly
-│   ├── fetch_real_news.py      # Automated scraper for The Hindu & Indian Express
-│   ├── scale_dataset.py        # Balanced multi-source data builder with deduplication
-│   └── add_manual_sample.py    # CLI wizard for manual data entry
-├── .env.example                # Environment variables template
-├── .gitignore                  # Production Git ignore rules
-└── requirements.txt            # Pinned dependencies
-```
+An academic, production-grade AI system engineered for real-time verification of contextual misinformation, disinformation, and multimodal hate speech across the Indian socio-political landscape.
 
 ---
 
-## 🚀 Team Quickstart Guide
+## 🏛️ System Architecture
 
-### 1. Clone & Setup Virtual Environment
+* **Backend**: FastAPI (`http://localhost:8000`)
+* **Frontend**: Next.js 14 App Router, TypeScript, Tailwind CSS, Framer Motion (`http://localhost:3000`)
+* **Natural Language Processing**:
+  * **Classical ML Baselines**: Linear Support Vector Machines (SVM), Logistic Regression, Naive Bayes, Random Forest (Trained on 20,000 Indian news & toxicity samples).
+  * **Deep Learning Transformers**: Fine-tuned BERT (`bert-base-uncased` — **97.02% F1** on Fake News, **78.08% F1** on Hate Speech).
+* **Multimodal Speech-to-Text**: OpenAI Whisper (`base` model, ~74M parameters) + `ffmpeg` for extracting and transcribing audio tracks from uploaded `.mp4` and `.mov` videos.
 
+---
+
+## 📋 Prerequisites & Installation
+
+To run this project on any machine (**Windows**, **macOS**, or **Linux**), ensure you have:
+1. **Python 3.10+**
+2. **Node.js 18+ or 20+** and `npm`
+3. **ffmpeg** (required for extracting audio from video files)
+
+### Step 1: Install `ffmpeg` on Your System
+
+* **macOS** (via Homebrew):
+  ```bash
+  brew install ffmpeg
+  ```
+* **Windows** (via PowerShell or Command Prompt):
+  ```powershell
+  winget install Gyan.FFmpeg
+  # Or via Chocolatey: choco install ffmpeg
+  ```
+* **Linux (Ubuntu/Debian)**:
+  ```bash
+  sudo apt update && sudo apt install -y ffmpeg
+  ```
+
+---
+
+## 🚀 Step-by-Step Setup Guide
+
+### 1. Clone the Repository
 ```bash
-# Clone the repository
-git clone <repo-url>
-cd sec_prototype
+git clone https://github.com/SamDeveloper1/prototype.git
+cd prototype
+```
 
-# Create and activate a virtual environment
+---
+
+### 2. Backend Setup (FastAPI + AI Models)
+
+Open a terminal in the project root folder:
+
+#### On macOS / Linux:
+```bash
+# 1. Create a virtual environment
 python3 -m venv venv
-source venv/bin/activate   # On Windows: venv\Scripts\activate
 
-# Install all required dependencies
+# 2. Activate virtual environment
+source venv/bin/activate
+
+# 3. Install Python dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Environment Variables
+#### On Windows (PowerShell):
+```powershell
+# 1. Create a virtual environment
+python -m venv venv
 
-Copy the template to `.env`:
-```bash
-cp .env.example .env
+# 2. Activate virtual environment
+.\venv\Scripts\Activate.ps1
+
+# 3. Install Python dependencies
+pip install -r requirements.txt
 ```
 
 ---
 
-## 📊 Data Pipelines (ETL)
+### 3. Frontend Setup (Next.js Broadsheet UI)
 
-All data collection is automated, strictly English-validated, and deduplicated:
+Open a second terminal (or navigate into the `web/` folder):
 
-* **Re-build & Scale Dataset**:
-  ```bash
-  python src/scale_dataset.py
-  ```
-* **Add a Manual Entry via CLI Wizard**:
-  ```bash
-  python src/add_manual_sample.py
-  ```
+```bash
+cd web
+
+# Install Node.js dependencies
+npm install
+```
 
 ---
 
-## 👥 Team Collaboration Guidelines
+## 🏃‍♂️ How to Run the Application
 
-1. **Branching**: Always branch off `main` for new features (`git checkout -b feature/<feature-name>`).
-2. **Commit Messages**: Use clean, descriptive commit messages (e.g. `feat: add RoBERTa fine-tuning script`, `fix: remove non-Latin characters from tokenizer`).
-3. **No Hardcoded Absolute Paths**: Always use `os.path` relative to `__file__` or the repository root.
-4. **Weights**: Large model checkpoints (`*.pt`, `*.bin`, `*.safetensors`) are ignored by `.gitignore` to prevent exceeding GitHub limits. Store download links in `models/README.md` or use Git LFS / Hugging Face Hub.
+### Option A: One-Command Launcher (macOS / Linux)
+In the project root folder, simply run:
+```bash
+./run_app.sh
+```
+*(This automatically launches FastAPI on `:8000` and Next.js on `:3000` concurrently).*
+
+---
+
+### Option B: Manual Two-Terminal Run (Windows & All Platforms)
+
+#### Terminal 1 — Backend (FastAPI):
+```bash
+# Ensure virtual environment is activated
+python main.py
+```
+* Backend starts at: **`http://localhost:8000`**
+* Interactive Swagger API Docs: **`http://localhost:8000/docs`**
+
+#### Terminal 2 — Frontend (Next.js):
+```bash
+cd web
+npm run dev
+```
+* Frontend starts at: **`http://localhost:3000`**
+
+Open **`http://localhost:3000`** in your web browser to use the application!
+
+---
+
+## 📦 What is Pushed to GitHub vs. What Must Be Sent Separately?
+
+### What is ALREADY in GitHub (Pushed automatically):
+1. **Full Next.js 14 Frontend**: All broadsheet components, navigation, rubber stamp animations, and styles.
+2. **FastAPI Backend & Controllers**: Input scrapers, Whisper media processor, and endpoints.
+3. **All Clean Datasets**: 10,000 Fake News samples and 10,000 Hate Speech samples with 80/10/10 train/val/test splits in `data/splits/`.
+4. **All Classical ML Models**: `fake_news_best_model.joblib` (Linear SVM, 93.0% F1) and `hate_speech_best_model.joblib` in `models/`.
+5. **BiLSTM Weights**: Saved under `models/deep_learning/**/bilstm/`.
+
+---
+
+### ⚠️ What MUST be sent separately (Cannot be pushed to GitHub):
+
+GitHub has a **strict 100 MB per-file limit** and automatically rejects any push containing files larger than 100 MB. 
+
+Because fine-tuned BERT models are **~438 MB each**, they are ignored by `.gitignore` and **must be shared via Google Drive or Hugging Face**:
+
+| Missing File | Size | Exact Folder Location to Paste Into |
+| :--- | :---: | :--- |
+| **`model.safetensors`** *(Fake News BERT)* | **438 MB** | `models/deep_learning/fakenews/bert-base-uncased/best_model/model.safetensors` |
+| **`model.safetensors`** *(Hate Speech BERT)* | **438 MB** | `models/deep_learning/hatespeech/bert-base-uncased/best_model/model.safetensors` |
+
+> [!NOTE]
+> **Graceful Fallback Built-In**:  
+> If someone clones the repository **without** downloading these two 438 MB BERT files, the backend **does not crash**. It automatically falls back to the high-accuracy Linear SVM baseline models (93.00% F1 on Fake News and 72.39% F1 on Hate Speech), meaning the system works out-of-the-box even without the large weights!
+
+---
+
+## 🧪 API Endpoints Reference
+
+| Method | Route | Description |
+| :--- | :--- | :--- |
+| `POST` | `/predict_fakenews` | Accepts `{ "text": "..." }` or `{ "url": "https://..." }`. Scrapes web link and returns Real/Fake verdict + confidence. |
+| `POST` | `/predict_hatespeech` | Accepts `{ "text": "..." }`. Returns Safe/Hostile verdict + confidence. |
+| `POST` | `/predict_hatespeech_media` | Accepts `multipart/form-data` audio (`.mp3`, `.wav`) or video (`.mp4`, `.mov`). Transcribes speech via Whisper and predicts toxicity. |
+| `GET` | `/health` | Healthcheck and active model status. |
+| `GET` | `/docs` | Interactive Swagger documentation. |
