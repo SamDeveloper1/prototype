@@ -33,8 +33,8 @@ export const EditorialNav: React.FC<EditorialNavProps> = ({ activeTab, onSelectT
   ];
 
   return (
-    <nav className="w-full max-w-7xl mx-auto px-4 mt-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 bg-[#EFE9DF] p-1.5 rounded-sm border border-[#DDD5C7]">
+    <nav className="w-full max-w-7xl mx-auto px-3 sm:px-4 mt-4 sm:mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 bg-[#DFD9CE] p-1.5 rounded-sm border border-[#CBC8B9]">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -43,30 +43,30 @@ export const EditorialNav: React.FC<EditorialNavProps> = ({ activeTab, onSelectT
             <button
               key={tab.id}
               onClick={() => onSelectTab(tab.id)}
-              className={`flex items-start gap-3 p-3 text-left transition-all rounded-xs relative ${
+              className={`flex items-start gap-2.5 sm:gap-3 p-2.5 sm:p-3 text-left transition-all rounded-xs relative cursor-pointer ${
                 isActive
-                  ? "bg-[#FFFFFF] text-[#1C1E21] shadow-sm border border-[#D5CCC0]"
-                  : "text-[#606770] hover:bg-[#F5F1E9] hover:text-[#1C1E21]"
+                  ? "bg-[#FAF8F5] text-[#131112] shadow-xs border border-[#CBC8B9]"
+                  : "text-[#353535] hover:bg-[#EAE4D9] hover:text-[#131112]"
               }`}
             >
               <div
-                className={`p-2 rounded-xs ${
-                  isActive ? "bg-[#1C1E21] text-[#FAF8F5]" : "bg-[#DDD5C7] text-[#555A64]"
+                className={`p-2 rounded-xs shrink-0 ${
+                  isActive ? "bg-[#D74108] text-white" : "bg-[#CBC8B9] text-[#353535]"
                 }`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
               </div>
               <div>
                 <div className="text-xs md:text-sm font-bold font-headline tracking-wide uppercase">
                   {tab.label}
                 </div>
-                <div className="text-[11px] font-mono-meta text-[#737A87]">
+                <div className="text-[11px] font-mono-meta text-[#6B7280]">
                   {tab.subtitle}
                 </div>
               </div>
 
               {isActive && (
-                <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#1C1E21] rounded-full hidden md:block" />
+                <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#D74108] rounded-full hidden md:block" />
               )}
             </button>
           );

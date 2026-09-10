@@ -29,29 +29,31 @@ export default function Home() {
       </div>
 
       {/* Broadsheet Footer */}
-      <footer className="w-full border-t-2 border-[#E2DBD0] bg-[#FAF8F5] py-8 mt-12 text-center text-xs font-mono-meta text-[#6B7280]">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-[#1C1E21] font-headline text-sm">
-              THE VERITAS CHRONICLE
+      <footer className="w-full border-t-2 border-[#CBC8B9] bg-[#FAF8F5] py-6 sm:py-8 mt-12 text-xs font-mono-meta text-[#353535]">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1">
+            <span className="font-bold text-[#131112] font-headline text-base sm:text-lg">
+              TruthGuard AI
             </span>
-            <span>·</span>
-            <span>Final Year B.Tech Academic Thesis Project (2026)</span>
+            <span className="hidden sm:inline text-[#CBC8B9]">·</span>
+            <span className="text-[11px] sm:text-xs text-[#353535]">
+              Final Year B.Tech Research Prototype (2026)
+            </span>
           </div>
 
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
-              <ShieldCheck className="w-4 h-4" /> Zero-Curse Examiner Safe
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <span className="flex items-center gap-1.5 text-[#1E5E41] font-semibold text-[11px] sm:text-xs">
+              <ShieldCheck className="w-4 h-4 text-[#1E5E41] shrink-0" /> Zero-Curse Examiner Safe
             </span>
-            <span>·</span>
-            <span className="flex items-center gap-1.5 text-blue-700 font-semibold">
-              <BookOpen className="w-4 h-4" /> 20,000 Indian Samples
+            <span className="hidden sm:inline text-[#CBC8B9]">·</span>
+            <span className="flex items-center gap-1.5 text-[#D74108] font-semibold text-[11px] sm:text-xs">
+              <BookOpen className="w-4 h-4 text-[#D74108] shrink-0" /> 20,000 Indian Corpus
             </span>
           </div>
         </div>
 
-        <div className="mt-4 pt-3 border-t border-[#EBE5DA] text-[11px] text-[#9CA3AF]">
-          Powered by Next.js 14, Tailwind CSS, FastAPI, Fine-Tuned BERT Transformers & OpenAI Whisper.
+        <div className="max-w-7xl mx-auto px-4 mt-4 pt-3 border-t border-[#CBC8B9] text-[11px] text-[#353535] text-center">
+          FastAPI Backend · Next.js 14 · Fine-Tuned BERT (97.02% F1) · OpenAI Whisper Multimodal
         </div>
       </footer>
     </div>

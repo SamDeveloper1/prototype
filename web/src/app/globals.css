@@ -1,35 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --parchment-bg: #F9F6F0;
-  --parchment-card: #FFFFFF;
-  --ink-charcoal: #1C1E21;
-  --ink-muted: #6B7280;
-  --border-sepia: #E2DBD0;
-  --stamp-emerald: #047857;
-  --stamp-crimson: #B91C1C;
-  --stamp-teal: #0F766E;
-  --accent-cobalt: #1D4ED8;
+  /* Paperio Color Palette */
+  --color-pearl-bush: #EDE8DF;
+  --color-card-bg: #FAF8F5;
+  --color-ink-black: #131112;
+  --color-dark-grey: #353535;
+  --color-foggy-grey: #CBC8B9;
+  --color-grenadier: #D74108;
+  --color-verified-green: #1E5E41;
 }
 
 body {
-  background-color: var(--parchment-bg);
-  color: var(--ink-charcoal);
-  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-image: radial-gradient(#d6cec2 0.75px, transparent 0.75px);
+  background-color: var(--color-pearl-bush);
+  color: var(--color-ink-black);
+  font-family: var(--font-body), "Helvetica", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-image: radial-gradient(#CBC8B9 0.75px, transparent 0.75px);
   background-size: 24px 24px;
 }
 
-/* Authentic Newsprint Typography */
-.font-headline {
-  font-family: var(--font-headline), "Newsreader", "Georgia", "Times New Roman", serif;
+/* Typography from Paperio: Ibarra Real Nova & Helvetica/Inter */
+.font-headline,
+.font-brand {
+  font-family: var(--font-headline), "Ibarra Real Nova", "Georgia", serif;
+}
+
+.font-body {
+  font-family: var(--font-body), "Helvetica", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .font-mono-meta {
   font-family: var(--font-mono), "JetBrains Mono", "Courier New", monospace;
 }
 
-/* Rubber Stamp Styling */
+/* Rubber Stamp Styling (Paperio Color Matched) */
 .rubber-stamp {
   display: inline-block;
   text-transform: uppercase;
@@ -38,64 +42,46 @@ body {
   padding: 0.5rem 1.25rem;
   border-width: 4px;
   border-style: double;
-  mask-image: radial-gradient(circle at 50% 50%, black 80%, rgba(0, 0, 0, 0.6) 100%);
+  mask-image: radial-gradient(circle at 50% 50%, black 85%, rgba(0, 0, 0, 0.65) 100%);
   user-select: none;
 }
 
 .rubber-stamp-real {
-  color: var(--stamp-emerald);
-  border-color: var(--stamp-emerald);
-  background: rgba(4, 120, 87, 0.05);
+  color: var(--color-verified-green);
+  border-color: var(--color-verified-green);
+  background: rgba(30, 94, 65, 0.06);
 }
 
 .rubber-stamp-fake {
-  color: var(--stamp-crimson);
-  border-color: var(--stamp-crimson);
-  background: rgba(185, 28, 28, 0.05);
+  color: var(--color-grenadier);
+  border-color: var(--color-grenadier);
+  background: rgba(215, 65, 8, 0.07);
 }
 
 .rubber-stamp-safe {
-  color: var(--stamp-teal);
-  border-color: var(--stamp-teal);
-  background: rgba(15, 118, 110, 0.05);
+  color: var(--color-verified-green);
+  border-color: var(--color-verified-green);
+  background: rgba(30, 94, 65, 0.06);
 }
 
 .rubber-stamp-hostile {
-  color: var(--stamp-crimson);
-  border-color: var(--stamp-crimson);
-  background: rgba(185, 28, 28, 0.05);
+  color: var(--color-grenadier);
+  border-color: var(--color-grenadier);
+  background: rgba(215, 65, 8, 0.07);
 }
 
-/* Broadsheet Columns & Dividers */
-.news-border-b {
-  border-bottom: 2px solid var(--border-sepia);
-}
-
-.news-border-t {
-  border-top: 2px solid var(--border-sepia);
-}
-
-.news-border-double {
-  border-top: 4px double var(--ink-charcoal);
-  border-bottom: 4px double var(--ink-charcoal);
-}
-
-.news-col-divider {
-  border-right: 1px solid var(--border-sepia);
-}
-
-/* Custom Scrollbars */
+/* Custom Scrollbars in Foggy Grey */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F3EFE6;
+  background: #EDE8DF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CFC5B4;
+  background: #CBC8B9;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #AFA492;
+  background: #353535;
 }
